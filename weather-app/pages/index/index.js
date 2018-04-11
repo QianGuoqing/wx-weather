@@ -16,21 +16,24 @@ const weatherColorMap = {
   snow: '#aae1fc'
 }
 
+const HOUR_24 = 24
+
 Page({
   data: {
     nowTemperature: '',
     nowWeather: '',
-    weatherBackground: ''
+    weatherBackground: '',
+    weatherByHour: []
   },
   onLoad() {
-    this._getNowWeatherInformation()
+    this.getNowWeatherInformation()
   },
   onPullDownRefreash() {
-    this._getNowWeatherInformation(() => {
+    this.getNowWeatherInformation(() => {
       wx.stopPullDownRefresh()
     })
   },
-  _getNowWeatherInformation(callback) {
+  getNowWeatherInformation(callback) {
     wx.request({
       url: 'https://test-miniprogram.com/api/weather/now',
       data: {
@@ -44,6 +47,7 @@ Page({
         if (res.code === 200) {
           let result = res.result
           let { temp, weather } = result.now
+          console.log(result);
           this.setData({
             nowTemperature: temp,
             nowWeather: weatherMap[weather],
@@ -54,6 +58,18 @@ Page({
             frontColor: '#000000',
             backgroundColor: weatherColorMap[weather]
           })
+
+          let forecast = result.forecast
+          let weatherByHour = []
+          for (let i = 0; i < HOUR_24; i += 3) {
+            weatherByHour.push({
+              hour: (new Date().getHours() + i) % 24 + '时',
+              icon: `/images/${forecast[i/3].weather}-icon.png`,
+              temperature: `${forecast[i/3].temp}°`
+            })
+            weatherByHour[0].hour = '现在'
+          }
+          this.setData({ weatherByHour })
         }
       },
       fail: () => {
