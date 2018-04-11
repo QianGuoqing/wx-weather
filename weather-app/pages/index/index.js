@@ -17,6 +17,7 @@ const weatherColorMap = {
 }
 
 const HOUR_24 = 24
+const HOUR_INTERVAL = 3
 
 Page({
   data: {
@@ -46,30 +47,9 @@ Page({
         res = res.data
         if (res.code === 200) {
           let result = res.result
-          let { temp, weather } = result.now
-          console.log(result);
-          this.setData({
-            nowTemperature: temp,
-            nowWeather: weatherMap[weather],
-            weatherBackground: `/images/${weather}-bg.png`
-          })
 
-          wx.setNavigationBarColor({
-            frontColor: '#000000',
-            backgroundColor: weatherColorMap[weather]
-          })
-
-          let forecast = result.forecast
-          let weatherByHour = []
-          for (let i = 0; i < HOUR_24; i += 3) {
-            weatherByHour.push({
-              hour: (new Date().getHours() + i) % 24 + '时',
-              icon: `/images/${forecast[i/3].weather}-icon.png`,
-              temperature: `${forecast[i/3].temp}°`
-            })
-            weatherByHour[0].hour = '现在'
-          }
-          this.setData({ weatherByHour })
+          this._getCurrentTimeWeather(result)
+          this._getHourlyWeatherForecast(result)
         }
       },
       fail: () => {
@@ -80,5 +60,31 @@ Page({
         callback && callback()
       }
     })
+  },
+  _getCurrentTimeWeather(result) {
+    let { temp, weather } = result.now
+    this.setData({
+      nowTemperature: temp,
+      nowWeather: weatherMap[weather],
+      weatherBackground: `/images/${weather}-bg.png`
+    })
+
+    wx.setNavigationBarColor({
+      frontColor: '#000000',
+      backgroundColor: weatherColorMap[weather]
+    })
+  },
+  _getHourlyWeatherForecast(result) {
+    let forecast = result.forecast
+    let weatherByHour = []
+    for (let i = 0; i < HOUR_24; i += HOUR_INTERVAL) {
+      weatherByHour.push({
+        hour: (new Date().getHours() + i) % 24 + '时',
+        icon: `/images/${forecast[i / HOUR_INTERVAL].weather}-icon.png`,
+        temperature: `${forecast[i / HOUR_INTERVAL].temp}°`
+      })
+      weatherByHour[0].hour = '现在'
+    }
+    this.setData({ weatherByHour })
   }
 })
