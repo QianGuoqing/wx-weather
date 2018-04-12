@@ -24,14 +24,25 @@ Page({
     nowTemperature: '',
     nowWeather: '',
     weatherBackground: '',
-    weatherByHour: []
+    weatherByHour: [],
+    todayTimeString: '',
+    minTemp: '',
+    maxTemp: ''
   },
   onLoad() {
+    this.setData({
+      todayTimeString: this._getTodayTimeString()
+    })
     this.getNowWeatherInformation()
   },
   onPullDownRefreash() {
     this.getNowWeatherInformation(() => {
       wx.stopPullDownRefresh()
+    })
+  },
+  onRedirectToFutureWeather() {
+    wx.navigateTo({
+      url: '/pages/list/list'
     })
   },
   getNowWeatherInformation(callback) {
@@ -63,10 +74,13 @@ Page({
   },
   _getCurrentTimeWeather(result) {
     let { temp, weather } = result.now
+    let { minTemp, maxTemp } = result.today
     this.setData({
       nowTemperature: temp,
       nowWeather: weatherMap[weather],
-      weatherBackground: `/images/${weather}-bg.png`
+      weatherBackground: `/images/${weather}-bg.png`,
+      minTemp,
+      maxTemp
     })
 
     wx.setNavigationBarColor({
@@ -86,5 +100,12 @@ Page({
       weatherByHour[0].hour = '现在'
     }
     this.setData({ weatherByHour })
+  },
+  _getTodayTimeString() {
+    let date = new Date()
+    let year = date.getFullYear()
+    let month = date.getMonth() + 1
+    let day = date.getDate()
+    return  `${year} - ${month} - ${day} 今天` 
   }
 })

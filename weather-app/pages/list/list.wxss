@@ -1,0 +1,36 @@
+.weather-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 30rpx 0;
+  margin: 0 30rpx;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.weekday {
+  align-self: center;
+}
+
+.week-day {
+  opacity: 0.8;
+  font-size: 40rpx;
+  line-height: 56rpx;
+}
+
+.detail-day {
+  opacity: 0.5;
+  font-size: 25rpx;
+  line-height: 35rpx;
+}
+
+.future-weather {
+  align-self: center;
+  opacity: 0.8;
+  font-size: 40rpx;
+  line-height: 56rpx;
+}
+
+.weather-icon {
+  width: 90rpx;
+  height: 90rpx;
+  align-self: center;
+}
