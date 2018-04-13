@@ -1,4 +1,11 @@
 <view class="weather-wrapper">
+  <view class="location-wrapper" bindtap="onTapLocation">
+    <view class="location">
+      <image class="location-icon" src="/images/location-icon.png"></image>
+      <text class="location-city">{{ city }}</text>
+    </view>
+    <view class="location-tips">{{ locationTips }}</view>
+  </view>
   <view class="temperature">{{ nowTemperature }}°</view>
   <view class="weather">{{ nowWeather }}</view>
   <image src="{{ weatherBackground }}" class="weather-background-image" mode="scaleToFill"></image>

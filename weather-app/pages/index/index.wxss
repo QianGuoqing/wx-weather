@@ -89,3 +89,30 @@ view {
   height: 24rpx;
   margin-left: 10rpx;
 }
+
+.location-wrapper {
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 30rpx;
+  transform: translateX(-50%);
+  font-size: 30rpx;
+  line-height: 42rpx;
+  opacity: 0.5;
+  z-index: 10;
+}
+
+.location-icon {
+  width: 21rpx;
+  height: 30rpx;
+  margin-right: 10rpx;
+  vertical-align: top;
+}
+
+.location-city {
+  vertical-align: top;
+}
+
+.location-tips {
+  margin-top: 10rpx;
+}

@@ -6,11 +6,14 @@ const dayMap = [
 Page({
   data: {
     futureWeather: [1, 2, 3, 4, 5, 6, 7],
+    city: '成都市'
   },
-  onLoad() {
+  onLoad(options) {
+    this.setData({ city: options.city })
     this._requestFutureWeather()
   },
   onPullDownRefreash() {
+    console.log('on refresh list');
     this._requestFutureWeather(() => {
       wx.stopPullDownRefresh()
     })
@@ -19,7 +22,7 @@ Page({
     wx.request({
       url: 'https://test-miniprogram.com/api/weather/future',
       data: {
-        city: 'chengdu',
+        city: this.data.city,
         time: Date.now()
       },
       method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
